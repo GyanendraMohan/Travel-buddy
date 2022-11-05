@@ -5,9 +5,9 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import Rating from '@material-ui/lab/Rating';
 import useStyles from './styles'
 
-const Map = ({ setCoordinates, setBounds, coordinates }) => {
+const Map = ({ setCoordinates, setBounds, coordinates, places }) => {
     const classes = useStyles();
-    const isMobile = useMediaQuery('(min-width:600px)');
+    const isDesktop = useMediaQuery('(min-width:600px)');
 
 
     return (
@@ -23,8 +23,31 @@ const Map = ({ setCoordinates, setBounds, coordinates }) => {
                     setCoordinates = ({ lat: e.center.lat, lng: e.center.lng });
                     setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
                 }}
-                onChildClick={''}
+                onChildClick={""}
             >
+                {places?.map((place, i) => (
+                    <div
+                        className="classes.markerCOntainer"
+                        lat={Number(place.latitude)}
+                        lng={Number(place.longitude)}
+                        key={i}
+                    >
+                        {!isDesktop ? (
+                            <LocationOnOutlinedIcon color="primary" fontSize="large" />
+                        ) : (
+                            <Paper elevation={3} className={classes.paper}>
+                                <Typography className={classes.typography} variant="subtitle2" gutterBottom>
+                                    {place.name}
+                                </Typography>
+                                <img className={classes.pointer}
+                                    src={place.photo ? place.photo.images.large.url : 'https://images.unsplash.com/photo-1607537669513-8472b5a8f85b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'}
+                                    alt={place.name}
+                                />
+                                <Rating size="small" value={Number(place.rating)} readOnly />
+                            </Paper>
+                        )}
+                    </div>
+                ))}
 
             </GoogleMapReact>
         </div>
