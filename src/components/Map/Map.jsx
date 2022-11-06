@@ -5,7 +5,7 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import Rating from '@material-ui/lab/Rating';
 import useStyles from './styles'
 
-const Map = ({ setCoordinates, setBounds, coordinates, places }) => {
+const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }) => {
     const classes = useStyles();
     const isDesktop = useMediaQuery('(min-width:600px)');
 
@@ -17,17 +17,17 @@ const Map = ({ setCoordinates, setBounds, coordinates, places }) => {
                 defaultCenter={coordinates}
                 center={coordinates}
                 defaultZoom={14}
-                marzin={[50, 50, 50, 50]}
+                margin={[50, 50, 50, 50]}
                 options={''}
                 onChange={(e) => {
                     setCoordinates = ({ lat: e.center.lat, lng: e.center.lng });
                     setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
                 }}
-                onChildClick={""}
+                onChildClick={(child) => setChildClicked(child)}
             >
                 {places?.map((place, i) => (
                     <div
-                        className="classes.markerCOntainer"
+                        className={classes.markerContainer}
                         lat={Number(place.latitude)}
                         lng={Number(place.longitude)}
                         key={i}
